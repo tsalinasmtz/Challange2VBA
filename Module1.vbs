@@ -1,51 +1,5 @@
 Attribute VB_Name = "Module1"
 
-Sub FormatingMacro()
-
-    Dim ws As Worksheet
-    
-    Dim LastRow As Long
-    LastRow = Range("J2").End(xlDown).Row
-
-    For Each ws In ThisWorkbook.Worksheets
-        
-        ws.Range("I1").Value = "Ticker"
-        ws.Range("J1").Value = "Yearly Change"
-        ws.Range("K1").Value = "Percent Change"
-        ws.Range("L1").Value = "Total Stock Volume"
-        ws.Range("O2").Value = "Gratest % Increase"
-        ws.Range("O3").Value = "Gratest % Decrease"
-        ws.Range("O4").Value = "Greatest Total Volume"
-        ws.Range("P1").Value = "Ticker"
-        ws.Range("Q1").Value = "Value"
-        
-    LastRow = ws.Range("J2").End(xlDown).Row
-
-    For i = 2 To LastRow
-    
-    If ws.Cells(i, 10).Value < 0 Then
-    ws.Cells(i, 10).Interior.Color = RGB(255, 0, 0)
-
-     End If
-        
-     If ws.Cells(i, 10).Value > 0 Then
-     ws.Cells(i, 10).Interior.Color = RGB(102, 255, 102)
-
-     End If
-    
-     Next i
-
-     Next ws
-
-        Worksheets("2018").Range("A:Q").Columns.AutoFit
-        Worksheets("2019").Range("A:Q").Columns.AutoFit
-        Worksheets("2020").Range("A:Q").Columns.AutoFit
-    
-
-End Sub
-
-
-
 
 Sub TickerAnalysisFinal()
     Dim ws As Worksheet
@@ -58,33 +12,32 @@ Sub TickerAnalysisFinal()
     Dim i As Long
     Dim Brand_Total As Double
     Volume = 0
-    Dim Summary_Table_Row As Integer
-    Summary_Table_Row = 2
+
     Set ws = ActiveSheet
 
 For Each ws In ThisWorkbook.Worksheets
 On Error Resume Next
 
     LastRow = ws.Cells(ws.Rows.Count, "A").End(xlUp).Row
-    ' Initialize the ticker count to zero
+    
     TickerCount = 0
-    ' Loop through each row of the data
+    
     
     For i = 2 To LastRow
-        ' Check if we have moved on to a new ticker
+        
         If ws.Cells(i, "A").Value <> ws.Cells(i - 1, "A").Value Then
-            ' If so, increment the ticker count and record the new ticker name
+            
             TickerCount = TickerCount + 1
             Ticker = ws.Cells(i, "A").Value
-            ' Record the open price for the new ticker
+            
             OpenPrice = ws.Cells(i, "C").Value
-            ' Reset the last close price for the new ticker
+            
             LastClosePrice = ws.Cells(i, "F").Value
-            ' Add a new row to the analysis sheet for the new ticker
+            
             ws.Cells(TickerCount + 1, "I").Value = Ticker
 
         End If
-        ' Calculate the percent change from open price for the current ticker
+        
             LastClosePrice = ws.Cells(i, "F").Value
             ws.Cells(TickerCount + 1, "J").Value = LastClosePrice - OpenPrice
             ws.Cells(TickerCount + 1, "K").Value = (LastClosePrice - OpenPrice) / OpenPrice
@@ -114,62 +67,8 @@ End Sub
 
 
 
-Sub TickerSummary()
-    
-    Dim ws As Worksheet
-    
-    Dim TickerRange As Range
-    Dim LastRowTicker As Long
-    
-    Dim VolumeRange As Range
-    Dim LastRowVolume As Long
-    
-    Dim PercentchangeRange As Range
-    Dim LastRowPercent As Long
-    
-    Dim TickerNameMax As String
-    Dim TickerNameMin As String
-    Dim TickerNameVolume As String
-    
-    Dim HighestVolume As Double
-    Dim MaxPercent As Double
-    Dim MinPercent As Double
-    
-    LastRowPercent = Range("K" & Rows.Count).End(xlUp).Row
-    Set PercentchangeRange = Range("K2:K" & LastRowPercent)
 
-    LastRowTicker = Range("I" & Rows.Count).End(xlUp).Row
-    Set TickerRange = Range("I2:I" & LastRowTicker)
-  
-    LastRowVolume = Range("L" & Rows.Count).End(xlUp).Row
-    Set VolumeRange = Range("L2:L" & LastRowVolume)
-    
-    MaxPercent = Application.WorksheetFunction.Max(PercentchangeRange)
-    Range("Q2").Value = MaxPercent
-    
-    MinPercent = Application.WorksheetFunction.Min(PercentchangeRange)
-    Range("Q3").Value = MinPercent
-    
-    HighestVolume = Application.WorksheetFunction.Max(VolumeRange)
-    Range("Q4").Value = HighestVolume
-    
-    TickerNameMax = TickerRange(PercentchangeRange.Find(MaxPercent).Row - TickerRange.Row + 1, 1).Value
-    Range("P2").Value = TickerNameMax
-    
-    TickerNameMin = TickerRange(PercentchangeRange.Find(MinPercent).Row - TickerRange.Row + 1, 1).Value
-    Range("P3").Value = TickerNameMin
-
-    TickerNameVolume = TickerRange(VolumeRange.Find(HighestVolume).Row - TickerRange.Row + 1, 1).Value
-    Range("P4").Value = TickerNameVolume
-    
-    Range("Q2:Q3").Style = "Percent"
-
-
-
-End Sub
-
-
-Sub TickerSummary2()
+Sub TickerSummaryFinal()
     
     Dim ws As Worksheet
     Dim TickerRange As Range
@@ -227,4 +126,38 @@ Sub TickerSummary2()
 
 End Sub
 
+Sub FormatingMacroFinal()
+    
+    Dim ws As Worksheet
+    Dim LastRow As Long
+    
+    For Each ws In ThisWorkbook.Worksheets
+        
+        LastRow = ws.Range("J2").End(xlDown).Row
+        
+        ws.Range("I1").Value = "Ticker"
+        ws.Range("J1").Value = "Yearly Change"
+        ws.Range("K1").Value = "Percent Change"
+        ws.Range("L1").Value = "Total Stock Volume"
+        ws.Range("O2").Value = "Gratest % Increase"
+        ws.Range("O3").Value = "Gratest % Decrease"
+        ws.Range("O4").Value = "Greatest Total Volume"
+        ws.Range("P1").Value = "Ticker"
+        ws.Range("Q1").Value = "Value"
 
+        For i = 2 To LastRow
+            
+            If ws.Cells(i, 10).Value < 0 Then
+                ws.Cells(i, 10).Interior.Color = RGB(255, 0, 0)
+            End If
+            
+            If ws.Cells(i, 10).Value > 0 Then
+                ws.Cells(i, 10).Interior.Color = RGB(102, 255, 102)
+            End If
+            
+        Next i
+        
+        ws.Range("A:Q").Columns.AutoFit
+    Next ws
+
+End Sub
