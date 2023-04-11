@@ -28,11 +28,8 @@ On Error Resume Next
             
             TickerCount = TickerCount + 1
             Ticker = ws.Cells(i, "A").Value
-            
             OpenPrice = ws.Cells(i, "C").Value
-            
             LastClosePrice = ws.Cells(i, "F").Value
-            
             ws.Cells(TickerCount + 1, "I").Value = Ticker
 
         End If
@@ -116,7 +113,7 @@ Sub TickerSummaryFinal()
             ws.Range("P4").Value = TickerNameVolume
             
             ws.Range("Q2:Q3").Style = "Percent"
-        
+            ws.Range("K2:K" & LastRowPercent).Style = "Percent"
        
         
         On Error GoTo 0
